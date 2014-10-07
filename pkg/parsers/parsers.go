@@ -69,15 +69,26 @@ func ParseHost(defaultHost string, defaultUnix, addr string) (string, error) {
 // Get a repos name and returns the right reposName + tag
 // The tag can be confusing because of a port in a repository name.
 //     Ex: localhost.localdomain:5000/samalba/hipache:latest
-func ParseRepositoryTag(repos string) (string, string) {
+//         localhost.localdomain:5000/samalba/hipache:latest;platform
+func ParseRepositoryTag(repos string) (string, string, string) {
+
+        var p int
+	var platform string
+
+	p = strings.LastIndex(repos, ";")
+	if p >= 0 {
+	   platform = repos[p+1:]
+	} else {
+ 	        platform = ""
+	}
 	n := strings.LastIndex(repos, ":")
 	if n < 0 {
-		return repos, ""
+		return repos[:p], "", platform
 	}
-	if tag := repos[n+1:]; !strings.Contains(tag, "/") {
-		return repos[:n], tag
+	if tag := repos[n+1:p]; !strings.Contains(tag, "/") {
+		return repos[:n], tag, platform
 	}
-	return repos, ""
+	return repos, "", platform
 }
 
 func PartParser(template, data string) (map[string]string, error) {
