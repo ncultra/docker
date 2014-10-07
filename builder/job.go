@@ -44,7 +44,7 @@ func (b *BuilderJob) CmdBuild(job *engine.Job) engine.Status {
 	job.GetenvJson("authConfig", authConfig)
 	job.GetenvJson("configFile", configFile)
 
-	repoName, tag = parsers.ParseRepositoryTag(repoName)
+	repoName, tag, _ = parsers.ParseRepositoryTag(repoName)
 	if repoName != "" {
 		if _, _, err := registry.ResolveRepositoryName(repoName); err != nil {
 			return job.Error(err)

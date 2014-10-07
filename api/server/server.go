@@ -261,7 +261,7 @@ func getImagesJSON(eng *engine.Engine, version version.Version, w http.ResponseW
 		outsLegacy := engine.NewTable("Created", 0)
 		for _, out := range outs.Data {
 			for _, repoTag := range out.GetList("RepoTags") {
-				repo, tag := parsers.ParseRepositoryTag(repoTag)
+				repo, tag, _ := parsers.ParseRepositoryTag(repoTag)
 				outLegacy := &engine.Env{}
 				outLegacy.Set("Repository", repo)
 				outLegacy.SetJson("Tag", tag)
@@ -516,7 +516,7 @@ func postImagesCreate(eng *engine.Engine, version version.Version, w http.Respon
 	}
 	if image != "" { //pull
 		if tag == "" {
-			image, tag = parsers.ParseRepositoryTag(image)
+			image, tag, _ = parsers.ParseRepositoryTag(image)
 		}
 		metaHeaders := map[string][]string{}
 		for k, v := range r.Header {
@@ -530,7 +530,7 @@ func postImagesCreate(eng *engine.Engine, version version.Version, w http.Respon
 		job.SetenvJson("authConfig", authConfig)
 	} else { //import
 		if tag == "" {
-			repo, tag = parsers.ParseRepositoryTag(repo)
+			repo, tag, _ = parsers.ParseRepositoryTag(repo)
 		}
 		job = eng.Job("import", r.Form.Get("fromSrc"), repo, tag)
 		job.Stdin.Add(r.Body)

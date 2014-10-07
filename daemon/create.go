@@ -38,7 +38,7 @@ func (daemon *Daemon) ContainerCreate(job *engine.Job) engine.Status {
 	container, buildWarnings, err := daemon.Create(config, hostConfig, name)
 	if err != nil {
 		if daemon.Graph().IsNotExist(err) {
-			_, tag := parsers.ParseRepositoryTag(config.Image)
+			_, tag, _ := parsers.ParseRepositoryTag(config.Image)
 			if tag == "" {
 				tag = graph.DEFAULTTAG
 			}

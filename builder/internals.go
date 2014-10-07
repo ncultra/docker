@@ -386,7 +386,7 @@ func ContainsWildcards(name string) bool {
 }
 
 func (b *Builder) pullImage(name string) (*imagepkg.Image, error) {
-	remote, tag := parsers.ParseRepositoryTag(name)
+	remote, tag, _ := parsers.ParseRepositoryTag(name)
 	if tag == "" {
 		tag = "latest"
 	}

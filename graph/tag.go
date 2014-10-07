@@ -19,7 +19,7 @@ func (s *TagStore) CmdTag(job *engine.Job) engine.Status {
 		newName = job.Args[0]
 		oldName = job.Args[1]
 	)
-	newRepo, newTag := parsers.ParseRepositoryTag(newName)
+	newRepo, newTag, _ := parsers.ParseRepositoryTag(newName)
 	// FIXME: Set should either parse both old and new name, or neither.
 	// 	the current prototype is inconsistent.
 	if err := s.Set(newRepo, newTag, oldName, true); err != nil {

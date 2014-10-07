@@ -36,7 +36,7 @@ func (daemon *Daemon) DeleteImage(eng *engine.Engine, name string, imgs *engine.
 	)
 
 	// FIXME: please respect DRY and centralize repo+tag parsing in a single central place! -- shykes
-	repoName, tag = parsers.ParseRepositoryTag(name)
+	repoName, tag, _ = parsers.ParseRepositoryTag(name)
 	if tag == "" {
 		tag = graph.DEFAULTTAG
 	}
@@ -64,7 +64,7 @@ func (daemon *Daemon) DeleteImage(eng *engine.Engine, name string, imgs *engine.
 	//If delete by id, see if the id belong only to one repository
 	if repoName == "" {
 		for _, repoAndTag := range repos {
-			parsedRepo, parsedTag := parsers.ParseRepositoryTag(repoAndTag)
+			parsedRepo, parsedTag, _ := parsers.ParseRepositoryTag(repoAndTag)
 			if repoName == "" || repoName == parsedRepo {
 				repoName = parsedRepo
 				if parsedTag != "" {
